@@ -1,28 +1,37 @@
 # Makefile for cli-tools
 
+SCRIPTS = scount countfiles
+INSTALL_DIR = $(HOME)/bin
+
 all: test install
 
 test:
 	@echo "Running tests..."
-	@./tests/test_scount.sh
+	@for script in $(SCRIPTS); do \
+        tests/test_$$script.sh; \
+    done
 	@echo "Tests complete."
 
 install:
 	@echo "Installing scripts..."
-	@mkdir -p $(HOME)/bin
-	@if [ -f "$(HOME)/bin/scount" ]; then \
-		echo "scount already exists in $(HOME)/bin. Skipping installation."; \
-	else \
-		cp scripts/scount.sh $(HOME)/bin/scount; \
-		chmod +x $(HOME)/bin/scount; \
-		echo "scount installed to $(HOME)/bin."; \
-	fi
-	@echo "Make sure to add $(HOME)/bin to your PATH if it's not already there."
+	@mkdir -p $(INSTALL_DIR)
+	@for script in $(SCRIPTS); do \
+        if [ -f "$(INSTALL_DIR)/$$script" ]; then \
+            echo "$$script already exists in $(INSTALL_DIR). Skipping installation."; \
+        else \
+            cp scripts/$$script.sh $(INSTALL_DIR)/$$script; \
+            chmod +x $(INSTALL_DIR)/$$script; \
+            echo "$$script installed to $(INSTALL_DIR)."; \
+        fi; \
+    done
+	@echo "Make sure to add $(INSTALL_DIR) to your PATH if it's not already there."
 
 uninstall:
 	@echo "Uninstalling scripts..."
-	@rm -f $(HOME)/bin/scount
-	@echo "scount uninstalled from $(HOME)/bin."
+	@for script in $(SCRIPTS); do \
+        rm -f $(INSTALL_DIR)/$$script; \
+        echo "$$script uninstalled from $(INSTALL_DIR)."; \
+    done
 
 help:
 	@echo "Available commands:"

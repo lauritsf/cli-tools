@@ -12,6 +12,10 @@ A simple Bash script to count Slurm jobs by user, status, or both.
 
 * Slurm workload manager (`squeue` command)
 
+### countfiles
+
+A Bash script to count files in a specified directory and its subdirectories. This is particularly useful when you have a limit on the number of files allowed in your home directory, and you need to identify which directories contain the most files.
+
 ## Installation
 
 1.  Clone the repository: `git clone https://github.com/lauritsf/cli-tools.git`
