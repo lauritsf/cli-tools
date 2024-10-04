@@ -4,7 +4,7 @@
 
 ## Scripts
 
-### slurm/scount
+### scount
 
 A simple Bash script to count Slurm jobs by user, status, or both.
 
