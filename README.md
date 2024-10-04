@@ -15,19 +15,13 @@ A simple Bash script to count Slurm jobs by user, status, or both.
 ## Installation
 
 1.  Clone the repository: `git clone https://github.com/lauritsf/cli-tools.git`
-2.  Allow execution of the script: `chmod +x /path/to/cli-tools/<directory>/<script_name>`
+2.  Run `make install` to install the script to `$HOME/bin`.
 
-You can now use the script directly from this location: `/path/to/cli-tools/<directory>/<script_name> [options]`
-
-Alternatively, you can:
-
-*   **Copy the script:** Copy `/path/to/cli-tools/<directory>/<script_name>` to a directory in your `PATH`, such as `$HOME/bin`.
-*   **Create a symbolic link:**  `ln -s /path/to/cli-tools/<directory>/<script_name> $HOME/bin/<script_name>`
-
+Make sure `$HOME/bin` is in your `PATH`. You can usually do this by adding `export PATH="$HOME/bin:$PATH"` to your shell's configuration file (e.g., `~/.bashrc` or `~/.zshrc`).
 
 ## Slurm Utilities You Might Like
 
 For more Slurm tools, including the excellent `pestat` script, check out [OleHolmNielsen/Slurm_tools](https://github.com/OleHolmNielsen/Slurm_tools). 
 
-## Licence
+## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

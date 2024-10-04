@@ -2,6 +2,10 @@
 
 # test_scount.sh
 
+# Counters for passed and failed tests
+passed_tests=0
+failed_tests=0
+
 run_scount() {
   local args="$@"
   local expected_exit_code=$1
@@ -12,6 +16,16 @@ run_scount() {
 
   if [ $actual_exit_code -ne $expected_exit_code ]; then
     echo "Test failed: scount.sh $args (expected exit code: $expected_exit_code, actual exit code: $actual_exit_code)"
+    ((failed_tests++))
+  elif [ "$actual_output" != "$expected_output" ]; then
+    echo "Test failed: scount.sh $args (output mismatch)"
+    echo "Expected output:"
+    echo "$expected_output"
+    echo "Actual output:"
+    echo "$actual_output"
+    ((failed_tests++))
+  else
+    ((passed_tests++))
   fi
 }
 
@@ -62,6 +76,9 @@ EOF
     echo "$expected_output"
     echo "Actual output:"
     echo "$actual_output"
+    ((failed_tests++))
+  else
+    ((passed_tests++))
   fi
 }
 test_show_help
@@ -123,9 +140,18 @@ test_process_counts() {
     echo "$expected_output"
     echo "Actual output:"
     echo "$actual_output"
+    ((failed_tests++))
+  else
+    ((passed_tests++))
   fi
 }
 
 test_process_counts "$awk_user_status" 3 "USER STATUS COUNT" "$squeue_u_t_output" "$scount_u_output"
 test_process_counts "$awk_status" 2 "STATUS COUNT" "$squeue_s_output" "$scount_s_output"
 test_process_counts "$awk_user" 2 "USER COUNT" "$squeue_u_output" "$scount_us_output"
+
+# Print test summary
+echo "---------------------------"
+echo "Test Summary for scount.sh:"
+echo "Passed: $passed_tests"
+echo "Failed: $failed_tests"
