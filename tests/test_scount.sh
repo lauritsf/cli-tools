@@ -84,46 +84,46 @@ EOF
 test_show_help
 
 # Test data (using defined strings)
-squeue_u_t_output="\
-USER STATE
-user1 PENDING
-user2 PENDING
-user1 PENDING
-user1 RUNNING
-user2 RUNNING"
+squeue_user_state_gres_output="\
+USER STATE GRES
+user1 PENDING gres:gpu:2
+user2 PENDING gres:gpu
+user1 PENDING gres:gpu:1
+user1 RUNNING gres:gpu
+user2 RUNNING gres:gpu:Ampere:3"
 
-scount_u_output="\
-USER   STATUS   COUNT
-user1  Pending  2
-user2  Running  1
-user2  Pending  1
-user1  Running  1"
+scount_output="\
+USER   STATUS   GPU_COUNT  JOB_COUNT
+user2  Running  3          1
+user1  Pending  3          2
+user2  Pending  1          1
+user1  Running  1          1"
 
-squeue_s_output="\
-STATE
-PENDING
-PENDING
-PENDING
-RUNNING
-RUNNING"
+squeue_state_gres_output="\
+STATE GRES
+PENDING gres:gpu:2
+PENDING gres:gpu
+PENDING gres:gpu:1
+RUNNING gres:gpu
+RUNNING gres:gpu:3"
 
 scount_s_output="\
-STATUS   COUNT
-Pending  3
-Running  2"
+STATUS   GPU_COUNT  JOB_COUNT
+Running  4          2
+Pending  4          3"
 
-squeue_u_output="\
-USER
-user1
-user2
-user1
-user1
-user2"
+squeue_user_gres_output="\
+USER GRES
+user1 gres:gpu:2
+user2 gres:gpu
+user1 gres:gpu:1
+user1 gres:gpu
+user2 gres:gpu:Ampere:3"
 
-scount_us_output="\
-USER   COUNT
-user1  3
-user2  2"
+scount_u_output="\
+USER   GPU_COUNT  JOB_COUNT
+user2  4          2
+user1  4          3"
 
 # Test process_counts
 test_process_counts() {
@@ -146,9 +146,9 @@ test_process_counts() {
   fi
 }
 
-test_process_counts "$awk_user_status" 3 "USER STATUS COUNT" "$squeue_u_t_output" "$scount_u_output"
-test_process_counts "$awk_status" 2 "STATUS COUNT" "$squeue_s_output" "$scount_s_output"
-test_process_counts "$awk_user" 2 "USER COUNT" "$squeue_u_output" "$scount_us_output"
+test_process_counts "$awk_user_status_gres" 3 "USER STATUS GPU_COUNT JOB_COUNT" "$squeue_user_state_gres_output" "$scount_output"
+test_process_counts "$awk_status_gres" 2 "STATUS GPU_COUNT JOB_COUNT" "$squeue_state_gres_output" "$scount_s_output"
+test_process_counts "$awk_user_gres" 2 "USER GPU_COUNT JOB_COUNT" "$squeue_user_gres_output" "$scount_u_output"
 
 # Print test summary
 echo "---------------------------"
