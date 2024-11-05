@@ -51,6 +51,7 @@ touch testdir/file1.txt testdir/file2.txt testdir/file3.txt testdir/subdir/file4
 cd testdir
 
 expected_output=$(cat <<EOF
+total 5
 COUNT  DIRECTORY
 3      .
 2      ./subdir
@@ -61,6 +62,7 @@ run_countfiles 0
 cd ..
 
 expected_output=$(cat <<EOF
+total 5
 COUNT  DIRECTORY
 3      testdir
 2      testdir/subdir

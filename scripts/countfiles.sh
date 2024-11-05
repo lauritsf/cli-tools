@@ -17,24 +17,31 @@ count_files() {
     exit 1
   fi
 
-  # Count files in the specified directory and its subdirectories, and sort the output
-  {
-    echo "COUNT  DIRECTORY"  # Add header
+  output=$(
     {
+      echo "COUNT  DIRECTORY" 
+      {
+        count=$(find "$directory" -type f -maxdepth 1 -printf "." 2>/dev/null | wc -c) 
+        echo "$count $directory"
 
-      # Count files in the root directory
-      count=$(find "$directory" -type f -maxdepth 1 -printf "." 2>/dev/null | wc -c) 
-      echo "$count $directory"
+        for dir in "$directory"/{.,}*; do
+          if [ -d "$dir" ] && [ "$dir" != "$directory/." ] && [ "$dir" != "$directory/.." ]; then
+            count=$(find "$dir" -type f -printf "." 2>/dev/null | wc -c)
+            echo "$count $dir"
+          fi
+        done
+      } | sort -nr 
+    } | column -t
+  )
 
-      # Count files in subdirectories
-      for dir in "$directory"/{.,}*; do
-        if [ -d "$dir" ] && [ "$dir" != "$directory/." ] && [ "$dir" != "$directory/.." ]; then
-          count=$(find "$dir" -type f -printf "." 2>/dev/null | wc -c)
-          echo "$count $dir"
-        fi
-      done
-    } | sort -nr
-  } | column -t
+  total=0
+  while IFS= read -r line; do
+    count=$(echo "$line" | cut -d ' ' -f 1)
+    total=$((total + count))
+  done <<< "$output"
+
+  echo "total $total"  # Print the total count first
+  echo "$output"  # Print the individual counts
 }
 
 # Main function
