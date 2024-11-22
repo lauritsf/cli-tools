@@ -16,6 +16,26 @@ A simple Bash script to count Slurm jobs by user, status, or both.
 
 A Bash script to count files in a specified directory and its subdirectories. This is particularly useful when you have a limit on the number of files allowed in your home directory, and you need to identify which directories contain the most files.
 
+## Modules
+
+### singularity-bindings-lumi
+
+This module sets up the environment for a frictionless experience with Singularity containers on LUMI. It simplifies the process of using Singularity by:
+
+* Automatically binding essential LUMI directories (like `/pfs`, `/scratch`, `/projappl`) into your containers.
+* Setting environment variables as shortcuts to commonly used container directories.
+
+#### Usage
+
+1. **Make the module available:**
+   ```bash
+   module use <path to modules directory>  # e.g., module use ~/repositories/cli-tools/modules
+   ```
+2. **Make the module available:**
+   ```bash
+   module load singularity-bindings-lumi
+   ```
+
 ## Installation
 
 1.  Clone the repository: `git clone https://github.com/lauritsf/cli-tools.git`
